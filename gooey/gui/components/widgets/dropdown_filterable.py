@@ -126,7 +126,7 @@ class FilterableDropdown(Dropdown):
 
     def setOptions(self, options):
         self.model.updateChoices(options)
-        if not self.model.actualValue in options:
+        if self.model.actualValue not in options:
             self.model.updateActualValue('')
 
     def setValue(self, value):
@@ -149,9 +149,7 @@ class FilterableDropdown(Dropdown):
         """
         if wxEvent.EventObject not in (self.widget, self.widget.GetTextCtrl()):
             self.model.hideSuggestions()
-            wxEvent.Skip()
-        else:
-            wxEvent.Skip()
+        wxEvent.Skip()
 
     def onTextInput(self, event):
         """Processes the user's input and show relevant suggestions"""
@@ -173,13 +171,12 @@ class FilterableDropdown(Dropdown):
             if not self.model.suggestionsVisible:
                 self.model.generateSuggestions(self.model.displayValue)
                 self.model.showSuggestions()
-            else:
-                if self.listbox.OnGetItem(0) != self.model.noMatch:
-                    self.ignore = True
-                    if event.GetKeyCode() == wx.WXK_DOWN:
-                        self.model.incSelectedSuggestion()
-                    else:
-                        self.model.decSelectedSuggestion()
+            elif self.listbox.OnGetItem(0) != self.model.noMatch:
+                self.ignore = True
+                if event.GetKeyCode() == wx.WXK_DOWN:
+                    self.model.incSelectedSuggestion()
+                else:
+                    self.model.decSelectedSuggestion()
         else:
             # for some reason deleting text doesn't
             # trigger the usual evt_text event, even though

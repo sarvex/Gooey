@@ -134,13 +134,12 @@ class GooeyApplication(wx.Frame):
                     self.showSuccess()
                     if self.buildSpec.get('show_success_modal', True):
                         wx.CallAfter(modals.showSuccess)
+            elif self.clientRunner.wasForcefullyStopped:
+                self.showForceStopped()
             else:
-                if self.clientRunner.wasForcefullyStopped:
-                    self.showForceStopped()
-                else:
-                    self.showError()
-                    if self.buildSpec.get('show_failure_modal'):
-                        wx.CallAfter(modals.showFailure)
+                self.showError()
+                if self.buildSpec.get('show_failure_modal'):
+                    wx.CallAfter(modals.showFailure)
 
     def onCancel(self):
         """Close the program after confirming

@@ -119,8 +119,7 @@ class ConfigPage(ScrolledPanel):
                 groupName.Bind(wx.EVT_LEFT_DOWN, notifyMouseEvent)
                 boxSizer.Add(groupName, 0, wx.TOP | wx.BOTTOM | wx.LEFT, 8)
 
-        group_description = getin(group, ['description'])
-        if group_description:
+        if group_description := getin(group, ['description']):
             description = AutoWrappedStaticText(parent, label=group_description, target=boxSizer)
             description.SetForegroundColour(getin(group, ['options', 'description_color']))
             description.SetMinSize((0, -1))
@@ -130,7 +129,7 @@ class ConfigPage(ScrolledPanel):
         # apply an underline when a grouping border is not specified
         # unless the user specifically requests not to show it
         if not getin(group, ['options', 'show_border'], False) and group['name'] \
-                and getin(group, ['options', 'show_underline'], True):
+                    and getin(group, ['options', 'show_underline'], True):
             boxSizer.Add(wx_util.horizontal_rule(parent), 0, wx.EXPAND | wx.LEFT, 10)
 
         ui_groups = self.chunkWidgets(group)
@@ -174,13 +173,12 @@ class ConfigPage(ScrolledPanel):
         subgroup = []
         for index, item in enumerate(group['items']):
             if getin(item, ['options', 'full_width'], False):
-                ui_groups.append(subgroup)
-                ui_groups.append([item])
+                ui_groups.extend((subgroup, [item]))
                 subgroup = []
             else:
                 subgroup.append(item)
             if len(subgroup) == getin(group, ['options', 'columns'], 2) \
-                    or item == group['items'][-1]:
+                        or item == group['items'][-1]:
                 ui_groups.append(subgroup)
                 subgroup = []
         return ui_groups

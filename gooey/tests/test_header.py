@@ -8,8 +8,7 @@ from gooey.tests import *
 class TestGooeyHeader(unittest.TestCase):
 
     def make_parser(self):
-        parser = ArgumentParser(description='description')
-        return parser
+        return ArgumentParser(description='description')
 
     def test_header_visibility(self):
         """
@@ -52,8 +51,7 @@ class TestGooeyHeader(unittest.TestCase):
         """
         iterable = product(['header_show_title', 'header_show_subtitle'], [True, False])
         allCombinations = list(powerset(iterable))
-        return [{k: v for k,v in args}
-                for args in allCombinations]
+        return [dict(args) for args in allCombinations]
 
 
 def powerset(iterable):

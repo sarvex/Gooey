@@ -29,5 +29,3 @@ def wrapBitmap(im, parent):
     return wx.StaticBitmap(parent, bitmap=bitmapData)
 
 
-if __name__ == '__main__':
-    pass

@@ -22,12 +22,8 @@ def getResourcePath(*args):
         resource_dir = os.path.join(basedir, 'gooey')
         if not os.path.isdir(resource_dir):
             raise IOError(
-                (
-                "Cannot locate Gooey resources. It seems that the program was frozen, "
-                "but resource files were not copied into directory of the executable "
-                "file. Please copy `languages` and `images` folders from gooey module "
-                "directory into `{}{}` directory. Using PyInstaller, a.datas in .spec "
-                "file must be specified.".format(resource_dir, os.sep)))
+                f"Cannot locate Gooey resources. It seems that the program was frozen, but resource files were not copied into directory of the executable file. Please copy `languages` and `images` folders from gooey module directory into `{resource_dir}{os.sep}` directory. Using PyInstaller, a.datas in .spec file must be specified."
+            )
     else:
         resource_dir = os.path.normpath(
             os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -40,8 +36,7 @@ def localResourcePath(path):
     When non-packaged, this is os.getcwd(), when packaged, it will be the local
     (dynamic) directory where PyInstaller decompresses content.
     """
-    if is_frozen():
-        basedir = getattr(sys, '_MEIPASS', None)
-        return os.path.join(basedir or sys.executable, path)
-    else:
+    if not is_frozen():
         return os.path.join(os.getcwd(), path)
+    basedir = getattr(sys, '_MEIPASS', None)
+    return os.path.join(basedir or sys.executable, path)

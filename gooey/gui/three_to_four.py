@@ -2,6 +2,7 @@
 Util for supporting WxPython 3 & 4
 '''
 
+
 import wx
 try:
     import wx.adv
@@ -20,15 +21,15 @@ class Constants:
         WX_DP_DROPDOWN = wx.DP_DROPDOWN
 
 
+
+
 class Classes:
     if isLatestVersion:
         DatePickerCtrl = wx.adv.DatePickerCtrl
+        TimePickerCtrl = wx.adv.TimePickerCtrl
     else:
         DatePickerCtrl = wx.DatePickerCtrl
 
-    if isLatestVersion:
-        TimePickerCtrl = wx.adv.TimePickerCtrl
-    else:
         TimePickerCtrl = wx.TimePickerCtrl
 
 
@@ -42,10 +43,7 @@ def imageFromBitmap(bitmap):
 
 
 def bitmapFromImage(image):
-    if isLatestVersion:
-        return wx.Bitmap(image)
-    else:
-        return wx.BitmapFromImage(image)
+    return wx.Bitmap(image) if isLatestVersion else wx.BitmapFromImage(image)
 
 
 def bitmapFromBufferRGBA(im, rgba):
@@ -55,10 +53,7 @@ def bitmapFromBufferRGBA(im, rgba):
         return wx.BitmapFromBufferRGBA(im.size[0], im.size[1], rgba)
 
 def AboutDialog():
-    if isLatestVersion:
-        return wx.adv.AboutDialogInfo()
-    else:
-        return wx.AboutDialogInfo()
+    return wx.adv.AboutDialogInfo() if isLatestVersion else wx.AboutDialogInfo()
 
 
 def AboutBox(aboutDialog):

@@ -169,9 +169,12 @@ class TextContainer(BaseWidget):
 
         userValidator = getin(self._options, ['validator', 'test'], 'True')
         message = getin(self._options, ['validator', 'message'], '')
-        testFunc = regexFunc \
-                   if getin(self._options, ['validator', 'type'], None) == 'RegexValidator'\
-                   else eval('lambda user_input: bool(%s)' % userValidator)
+        testFunc = (
+            regexFunc
+            if getin(self._options, ['validator', 'type'], None)
+            == 'RegexValidator'
+            else eval(f'lambda user_input: bool({userValidator})')
+        )
         satisfies = testFunc if self._meta['required'] else ifPresent(testFunc)
         value = self.getWidgetValue()
 

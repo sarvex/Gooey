@@ -10,11 +10,12 @@ class IntegerField(TextContainer):
     """
     widget_class = wx.SpinCtrl
     def getWidget(self, *args, **options):
-        widget = self.widget_class(self,
-                             value='',
-                             min=self._options.get('min', 0),
-                             max=self._options.get('max', 100))
-        return widget
+        return self.widget_class(
+            self,
+            value='',
+            min=self._options.get('min', 0),
+            max=self._options.get('max', 100),
+        )
 
     def getWidgetValue(self):
         return self.widget.GetValue()

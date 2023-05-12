@@ -129,9 +129,7 @@ def convert(parser, **kwargs):
             }) for name, sub_parser in iter_parsers(parser))
     }
 
-    if kwargs.get('use_legacy_titles'):
-        return apply_default_rewrites(x)
-    return x
+    return apply_default_rewrites(x) if kwargs.get('use_legacy_titles') else x
 
 
 def process(parser, widget_dict, options, group_defaults):
@@ -148,11 +146,10 @@ def strip_empty(groups):
 
 
 def assert_subparser_constraints(parser):
-    if has_subparsers(parser._actions):
-        if has_required(parser._actions):
-            raise UnsupportedConfiguration(
-                "Gooey doesn't currently support top level required arguments "
-                "when subparsers are present.")
+    if has_subparsers(parser._actions) and has_required(parser._actions):
+        raise UnsupportedConfiguration(
+            "Gooey doesn't currently support top level required arguments "
+            "when subparsers are present.")
 
 
 def iter_parsers(parser):
@@ -211,11 +208,11 @@ def handle_option_merge(group_defaults, incoming_options, title):
         # the argparse default 'required' bucket
         req_cols = getin(group_defaults, ['legacy', 'required_cols'], 2)
         new_defaults = assoc(group_defaults, 'columns', req_cols)
-        return merge(new_defaults, incoming_options)
     else:
         opt_cols = getin(group_defaults, ['legacy', 'optional_cols'], 2)
         new_defaults = assoc(group_defaults, 'columns', opt_cols)
-        return merge(new_defaults, incoming_options)
+
+    return merge(new_defaults, incoming_options)
 
 
 
@@ -386,7 +383,7 @@ def is_counter(action):
 
 
 def is_default_progname(name, subparser):
-    return subparser.prog == '{} {}'.format(os.path.split(sys.argv[0])[-1], name)
+    return subparser.prog == f'{os.path.split(sys.argv[0])[-1]} {name}'
 
 
 def is_help_message(action):
@@ -485,8 +482,7 @@ def validate_gooey_options(action, widget, options):
     That said "better is the enemy of done." This is good enough for now. It'll be
     a TODO: better validation 
     """
-    errors = collect_errors(validators, options)
-    if errors:
+    if errors := collect_errors(validators, options):
         from pprint import pformat
         raise ValueError(str(action.dest) + str(pformat(errors)))
 
@@ -540,7 +536,7 @@ def coerse_nargs_list(default):
     Without this transformation, `add_arg('--foo', default=['a b'], nargs='*')` would show up in
     the UI as the literal string `['a b']` brackets and all.
     """
-    return ' '.join('"{}"'.format(x) for x in default)
+    return ' '.join(f'"{x}"' for x in default)
 
 def is_widget(name):
     def equals(action, widget):
@@ -557,8 +553,9 @@ def textinput_with_nargs_and_list_default(action, widget):
     """
     return (
         widget in {'TextField', 'Textarea', 'PasswordField'}
-        and (isinstance(action.default, list) or isinstance(action.default, tuple))
-        and is_list_based_nargs(action))
+        and (isinstance(action.default, (list, tuple)))
+        and is_list_based_nargs(action)
+    )
 
 
 def is_list_based_nargs(action):
@@ -601,10 +598,7 @@ def safe_string(value):
     Coerce a type to string as long as it isn't None or Boolean
     TODO: why do I have this special boolean case..?
     """
-    if value is None or isinstance(value, bool):
-        return value
-    else:
-        return str(value)
+    return value if value is None or isinstance(value, bool) else str(value)
 
 
 def coerce_str(value):

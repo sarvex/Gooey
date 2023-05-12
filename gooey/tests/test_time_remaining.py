@@ -11,8 +11,7 @@ from gooey.tests import *
 class TestFooterTimeRemaining(unittest.TestCase):
 
     def make_parser(self):
-        parser = ArgumentParser(description='description')
-        return parser
+        return ArgumentParser(description='description')
 
     def test_time_remaining_visibility(self):
         for testdata in self.testcases():
@@ -51,8 +50,7 @@ class TestFooterTimeRemaining(unittest.TestCase):
         """
         iterable = product(['show_time_remaining', 'hide_time_remaining_on_complete'], [True, False])
         allCombinations = list(powerset(iterable))
-        return [{k: v for k,v in args}
-                for args in allCombinations]
+        return [dict(args) for args in allCombinations]
 
 
 def powerset(iterable):

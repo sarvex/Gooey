@@ -57,18 +57,17 @@ class TestFormatters(unittest.TestCase):
         def multifilechooser_helper(names):
             # Note that the MultiFileChooser widget produces a single string with
             # paths separated by os.pathsep.
-            if names:
-                prefix = names[0] + ' '
-            else:
-                prefix = ''
-
+            prefix = f'{names[0]} ' if names else ''
             expected_outputs = [
                 (names, None, ''),
-                (names, prefix + '"abc"', 'abc'),
-                (names, prefix + '"abc" "def"', os.pathsep.join(['abc', 'def'])),
-                # paths with spaces
-                (names, prefix + '"a b c"', 'a b c'),
-                (names, prefix + '"a b c" "d e f"', os.pathsep.join(['a b c', 'd e f'])),
+                (names, f'{prefix}"abc"', 'abc'),
+                (names, f'{prefix}"abc" "def"', os.pathsep.join(['abc', 'def'])),
+                (names, f'{prefix}"a b c"', 'a b c'),
+                (
+                    names,
+                    f'{prefix}"a b c" "d e f"',
+                    os.pathsep.join(['a b c', 'd e f']),
+                ),
             ]
 
             for commands, expected, widget_result in expected_outputs:

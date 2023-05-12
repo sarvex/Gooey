@@ -10,11 +10,12 @@ class Slider(TextContainer):
     """
     widget_class = wx.Slider
     def getWidget(self, *args, **options):
-        widget = self.widget_class(self,
-                                   minValue=self._options.get('min', 0),
-                                   maxValue=self._options.get('max', 100),
-                                   style=wx.SL_MIN_MAX_LABELS | wx.SL_VALUE_LABEL)
-        return widget
+        return self.widget_class(
+            self,
+            minValue=self._options.get('min', 0),
+            maxValue=self._options.get('max', 100),
+            style=wx.SL_MIN_MAX_LABELS | wx.SL_VALUE_LABEL,
+        )
 
     def getWidgetValue(self):
         return self.widget.GetValue()

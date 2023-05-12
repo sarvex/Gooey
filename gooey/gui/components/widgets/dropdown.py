@@ -37,9 +37,7 @@ class Dropdown(TextContainer):
         value = self.widget.GetValue()
         # filter out the extra default option that's
         # appended during creation
-        if value == _('select_option'):
-            return None
-        return value
+        return None if value == _('select_option') else value
 
     def formatOutput(self, metadata, value):
         return formatters.dropdown(metadata, value)

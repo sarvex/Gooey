@@ -81,10 +81,8 @@ def compact(coll):
 def ifPresent(f):
     """Execute f only if value is present and not None"""
     def inner(value):
-        if value:
-            return f(value)
-        else:
-            return True
+        return f(value) if value else True
+
     return inner
 
 

@@ -82,12 +82,9 @@ class RadioGroup(BaseWidget):
         if not self.isSameRadioButton(currentSelection, nextSelection):
             self.selected = nextSelection
             self.selected.SetValue(True)
-        else:
-            # user clicked on an already enabled radio button.
-            # if it is not in the required section, allow it to be deselected
-            if not self.widgetInfo['required']:
-                self.selected.SetValue(False)
-                self.selected = None
+        elif not self.widgetInfo['required']:
+            self.selected.SetValue(False)
+            self.selected = None
 
         self.applyStyleRules()
         self.handleImplicitCheck()
@@ -145,8 +142,10 @@ class RadioGroup(BaseWidget):
         firstButton.SetValue(False)
         buttons = [firstButton]
 
-        for _ in getin(self.widgetInfo, ['data','widgets'], [])[1:]:
-            buttons.append(wx.RadioButton(self))
+        buttons.extend(
+            wx.RadioButton(self)
+            for _ in getin(self.widgetInfo, ['data', 'widgets'], [])[1:]
+        )
         return buttons
 
     def createWidgets(self):

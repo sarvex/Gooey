@@ -36,7 +36,7 @@ class Sidebar(wx.Panel):
     def swapConfigPanels(self, event):
         """Hide/show configuration panels based on the currently selected
          option in the sidebar """
-        for id, panel in enumerate(self.configPanels):
+        for panel in self.configPanels:
             panel.Hide()
         self.activeSelection = event.Selection
         self.configPanels[event.Selection].Show()

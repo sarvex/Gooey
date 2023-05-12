@@ -12,7 +12,7 @@ def fetchDynamicProperties(target, encoding):
     dynamically generated defaults with which to seed the UI
     """
     # TODO: this needs to apply the same argpase_to_json data cleaning rules
-    cmd = '{} {}'.format(target, 'gooey-seed-ui --ignore-gooey')
+    cmd = f'{target} gooey-seed-ui --ignore-gooey'
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     if proc.returncode != 0:
         out, _ = proc.communicate()

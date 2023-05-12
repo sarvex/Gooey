@@ -138,13 +138,13 @@ class MultiDirChooser(Chooser):
     def getResult(self, dialog):
         paths = dialog.GetPaths()
         # Remove volume labels from Windows paths
-        if 'nt' == os.name:
+        if os.name == 'nt':
             for i, path in enumerate(paths):
                 if path:
                     parts = path.split(os.sep)
                     vol = parts[0]
                     drives = re.match(r'.*\((?P<drive>\w:)\)', vol)
-                    paths[i] = os.sep.join([drives.group('drive')] + parts[1:])
+                    paths[i] = os.sep.join([drives['drive']] + parts[1:])
 
         return os.pathsep.join(paths)
 

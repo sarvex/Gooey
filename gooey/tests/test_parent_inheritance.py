@@ -16,14 +16,12 @@ class TestParentInheritance(unittest.TestCase):
         parser = GooeyParser(parents=[base_parser])
         parser.add_argument("b_file", widget="DirChooser")
 
-        found = 0
-        for action in parser._actions:
-            if action.dest == "a_file":
-                found += 1
-            elif action.dest == "b_file":
-                found += 1
-
-        self.assertEqual(2, found, "Did not find 2 expected arguments, found " + str(found))
+        found = sum(
+            1 for action in parser._actions if action.dest in ["a_file", "b_file"]
+        )
+        self.assertEqual(
+            2, found, f"Did not find 2 expected arguments, found {str(found)}"
+        )
         self.assertEqual(parser.widgets["a_file"], "FileChooser")
         self.assertEqual(parser.widgets["b_file"], "DirChooser")
 
@@ -77,10 +75,11 @@ class TestParentInheritance(unittest.TestCase):
         """
         Verify two parameters named a_file exist and the default value is "a".
         """
-        found = 0
-        for action in parser._actions:
-            if action.dest == "a_file":
-                found += 1
-        self.assertEqual(2, found, "Expected a both actions handling a_file but got " + str(found))
+        found = sum(1 for action in parser._actions if action.dest == "a_file")
+        self.assertEqual(
+            2,
+            found,
+            f"Expected a both actions handling a_file but got {str(found)}",
+        )
         self.assertEqual(parser.get_default("a_file"), "a")
         self.assertNotEqual(action1, action2)

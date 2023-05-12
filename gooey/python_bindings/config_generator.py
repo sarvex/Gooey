@@ -31,7 +31,7 @@ def create_from_parser(parser, source_path, **kwargs):
     if hasattr(sys, 'frozen'):
       run_cmd = quote(source_path)
     else:
-      run_cmd = '{} -u {}'.format(quote(sys.executable), quote(source_path))
+      run_cmd = f'{quote(sys.executable)} -u {quote(source_path)}'
 
   build_spec = {
       'language':             kwargs.get('language', 'english'),
@@ -113,7 +113,7 @@ def create_from_parser(parser, source_path, **kwargs):
                    if build_spec['show_advanced']
                    else default_layout.items())
 
-  build_spec.update(layout_data)
+  build_spec |= layout_data
 
   if len(build_spec['widgets']) > 1:
     # there are subparsers involved

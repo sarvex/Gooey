@@ -23,8 +23,12 @@ def has_default(action):
     return bool(action.default)
 
 def assert_visibility_requirements(action, options):
-    if action.required and is_hidden(options) \
-            and not (has_validator(options) or has_default(action)):
+    if (
+        action.required
+        and is_hidden(options)
+        and not has_validator(options)
+        and not has_default(action)
+    ):
         raise ValueError(dedent(
             '''
             When using Gooey's hidden field functionality, you must either '
@@ -40,10 +44,13 @@ def assert_visibility_requirements(action, options):
         ))
 
 def assert_listbox_constraints(widget, **kwargs):
-    if widget and widget == 'Listbox':
-        if not 'nargs' in kwargs or kwargs['nargs'] not in ['*', '+']:
-            raise ValueError(
-                'Gooey\'s Listbox widget requires that nargs be specified.\n'
-                'Nargs must be set to either `*` or `+` (e.g. nargs="*")'
-            )
+    if (
+        widget
+        and widget == 'Listbox'
+        and ('nargs' not in kwargs or kwargs['nargs'] not in ['*', '+'])
+    ):
+        raise ValueError(
+            'Gooey\'s Listbox widget requires that nargs be specified.\n'
+            'Nargs must be set to either `*` or `+` (e.g. nargs="*")'
+        )
 

@@ -40,7 +40,7 @@ def lift(f):
 @lift
 def is_tuple_or_list(value):
     """Must be either a list or tuple"""
-    return isinstance(value, list) or isinstance(value, tuple)
+    return isinstance(value, (list, tuple))
 
 
 @lift
@@ -62,7 +62,7 @@ def is_str_or_coll(value):
 @lift
 def has_valid_channel_values(rgb_coll):
     """Colors in an RGB collection must all be in the range 0-255"""
-    return all([is_0to255(c) and is_int(c) for c in rgb_coll])
+    return all(is_0to255(c) and is_int(c) for c in rgb_coll)
 
 
 @lift
@@ -173,9 +173,6 @@ def validate(pred, value):
 
 
 
-if __name__ == '__main__':
-    # TODO: there should be tests
-    pass
     # print(validateColor((1, 'ergerg', 1234)))
     # print(validateColor(1234))
     # print(validateColor(123.234))

@@ -15,7 +15,7 @@ class TestGooeyApplication(unittest.TestCase):
     def testFullscreen(self):
         parser = self.basicParser()
         for shouldShow in [True, False]:
-            with self.subTest('Should set full screen: {}'.format(shouldShow)):
+            with self.subTest(f'Should set full screen: {shouldShow}'):
                 with instrumentGooey(parser, fullscreen=shouldShow) as (app, gapp):
                     self.assertEqual(gapp.IsFullScreen(), shouldShow)
 

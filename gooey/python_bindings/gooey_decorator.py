@@ -135,14 +135,7 @@ def Gooey(f=None,
 
   if IGNORE_COMMAND in sys.argv:
     sys.argv.remove(IGNORE_COMMAND)
-    if callable(f):
-      return run_without_gooey(f)
-    return run_without_gooey
-
-  if callable(f):
-    return build(f)
-  return build
+    return run_without_gooey(f) if callable(f) else run_without_gooey
+  return build(f) if callable(f) else build
 
 
-if __name__ == '__main__':
-  pass

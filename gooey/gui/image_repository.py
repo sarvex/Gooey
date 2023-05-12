@@ -37,8 +37,7 @@ def collectOverrides(targetDir, filenames):
 
     pathto = partial(os.path.join, targetDir)
     if not os.path.isdir(targetDir):
-        raise IOError('Unable to find the user supplied directory {}'.format(
-            targetDir))
+        raise IOError(f'Unable to find the user supplied directory {targetDir}')
 
     return {varname: pathto(filename)
             for varname, filename in filenames.items()

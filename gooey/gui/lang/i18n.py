@@ -19,7 +19,7 @@ def load(language_dir, filename, encoding):
   ''' Open and return the supplied json file '''
   global _DICTIONARY
   try:
-    json_file = filename + '.json'
+    json_file = f'{filename}.json'
     with io.open(os.path.join(language_dir, json_file), 'r', encoding=encoding) as f:
       _DICTIONARY = json.load(f)
   except IOError:
@@ -28,7 +28,7 @@ def load(language_dir, filename, encoding):
                   'listed language directory'.format(filename.title(), language_dir))
 
 def translate(key):
-  return _DICTIONARY.get(key, '(Translate me!) {}'.format(key))
+  return _DICTIONARY.get(key, f'(Translate me!) {key}')
 
 def _(key):
   return translate(key)

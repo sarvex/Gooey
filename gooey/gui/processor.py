@@ -84,8 +84,7 @@ class ProcessController(object):
         find = partial(re.search, string=text.strip().decode(self.encoding))
         regex = unit(self.progress_regex)
         match = bind(regex, find)
-        result = bind(match, self._calculate_progress)
-        return result
+        return bind(match, self._calculate_progress)
 
     def _calculate_progress(self, match):
         '''

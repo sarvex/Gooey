@@ -20,20 +20,20 @@ def radioGroup(metadata, value):
 def multiFileChooser(metadata, value):
     paths = ' '.join(quote(x) for x in value.split(os.pathsep) if x)
     if metadata['commands'] and paths:
-        return u'{} {}'.format(metadata['commands'][0], paths)
+        return f"{metadata['commands'][0]} {paths}"
     return paths or None
 
 
 def textArea(metadata, value):
     if metadata['commands'] and value:
-        return '{} {}'.format(metadata['commands'][0], quote(value.encode('unicode_escape')))
+        return f"{metadata['commands'][0]} {quote(value.encode('unicode_escape'))}"
     else:
         return quote(value.encode('unicode_escape')) if value else ''
 
 
 def commandField(metadata, value):
     if metadata['commands'] and value:
-        return u'{} {}'.format(metadata['commands'][0], value)
+        return f"{metadata['commands'][0]} {value}"
     else:
         return value or None
 
@@ -55,24 +55,21 @@ def dropdown(metadata, value):
     if value == 'Select Option':
         return None
     elif metadata['commands'] and value:
-        return u'{} {}'.format(metadata['commands'][0], quote(value))
+        return f"{metadata['commands'][0]} {quote(value)}"
     else:
         return quote(value) if value else ''
 
 
 def listbox(meta, value):
     if meta['commands'] and value:
-        return u'{} {}'.format(meta['commands'][0], ' '.join(map(quote, value)))
+        return f"{meta['commands'][0]} {' '.join(map(quote, value))}"
     else:
         return ' '.join(map(quote, value)) if value else ''
 
 
 def general(metadata, value):
     if metadata.get('commands') and value:
-        if not metadata.get('nargs'):
-            v = quote(value)
-        else:
-            v = value
+        v = quote(value) if not metadata.get('nargs') else value
         return u'{0} {1}'.format(metadata['commands'][0], v)
     else:
         if not value:

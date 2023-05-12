@@ -40,7 +40,7 @@ class TextCommandLine(unittest.TestCase):
         self.assertEqual(argnnargs, '+')
         argpnargs = next(action for action in parser._actions if action.dest == 'argp').nargs
         self.assertEqual(argpnargs, None)
-        mutexrequired = next(mutex for mutex in parser._mutually_exclusive_groups).required
+        mutexrequired = next(iter(parser._mutually_exclusive_groups)).required
         self.assertEqual(mutexrequired, True)
 
     def test_cmd_args_subparser(self):
